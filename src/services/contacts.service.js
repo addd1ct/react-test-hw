@@ -1,4 +1,4 @@
-import { Contact } from '../models/contacts.model.js';
+import { Contact } from '../models/contacts.models.js';
 
 export async function fetchAllContacts({ page, perPage, sortBy, sortOrder, filter }) {
   const skip = (page - 1) * perPage;

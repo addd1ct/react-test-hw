@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllContacts, getContactById, createContactController, updateContactController, deleteContactController } from '../controllers/contacts.controller.js';
+import { getAllContacts, getContactById, createContactController, updateContactController, deleteContactController } from '../controllers/contacts.controllers.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { createContactSchema, updateContactSchema } from '../schemas/contacts.schemas.js';

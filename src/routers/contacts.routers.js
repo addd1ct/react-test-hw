@@ -9,12 +9,7 @@ const contactsRouter = express.Router();
 contactsRouter.get('/', getAllContacts);
 contactsRouter.get('/:contactId', isValidId, getContactById);
 contactsRouter.post('/', validateBody(createContactSchema), createContactController);
-contactsRouter.patch(
-  '/:contactId',
-  isValidId,
-  validateBody(updateContactSchema),
-  updateContactController
-);
+contactsRouter.patch('/:contactId', isValidId, validateBody(updateContactSchema), updateContactController);
 contactsRouter.delete('/:contactId', isValidId, deleteContactController);
 
 export default contactsRouter;

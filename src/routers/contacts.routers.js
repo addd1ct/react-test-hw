@@ -3,8 +3,11 @@ import { getAllContacts, getContactById, createContactController, updateContactC
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { createContactSchema, updateContactSchema } from '../schemas/contacts.schemas.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = express.Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get('/', getAllContacts);
 contactsRouter.get('/:contactId', isValidId, getContactById);

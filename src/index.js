@@ -6,11 +6,11 @@ import { Contact } from './models/contacts.models.js';
 await initMongoConnection();
 
 const count = await Contact.countDocuments();
-if (count === 0) {
-  const json = await fs.readFile('./src/db/contacts.json', 'utf-8');
-  const contacts = JSON.parse(json);
-  await Contact.insertMany(contacts);
-  console.log('Контакти завантажені з contacts.json');
-}
+// if (count === 0) {
+//   const json = await fs.readFile('./src/db/contacts.json', 'utf-8');
+//   const contacts = JSON.parse(json);
+//   await Contact.insertMany(contacts);
+//   console.log('Контакти завантажені з contacts.json');
+// }
 
 setupServer();

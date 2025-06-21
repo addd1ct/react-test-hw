@@ -11,18 +11,23 @@ export async function getAllContacts(req, res) {
     isFavourite,
   } = req.query;
 
-  const filter = {};
-
-  if (type) filter.contactType = type;
-  if (isFavourite !== undefined) filter.isFavourite = isFavourite === 'true';
-
-  const result = await fetchAllContacts(req.user._id, {
+  const paginationOptions = {
     page: parseInt(page),
     perPage: parseInt(perPage),
     sortBy,
     sortOrder,
-    filter,
-  });
+    filter: {},
+  };
+
+  if (type) {
+    paginationOptions.filter.contactType = type;
+  }
+
+  if (isFavourite !== undefined) {
+    paginationOptions.filter.isFavourite = isFavourite === 'true';
+  }
+
+  const result = await fetchAllContacts(req.user._id, paginationOptions);
 
   res.status(200).json({
     status: 200,
@@ -34,6 +39,10 @@ export async function getAllContacts(req, res) {
 export async function getContactById(req, res) {
   const { contactId } = req.params;
   const contact = await fetchContactById(contactId, req.user._id);
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
 
   res.status(200).json({
     status: 200,
@@ -56,6 +65,10 @@ export async function updateContactController(req, res) {
   const { contactId } = req.params;
   const updated = await updateContact(contactId, req.body, req.user._id);
 
+  if (!updated) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
   res.status(200).json({
     status: 200,
     message: `Successfully updated contact with id ${contactId}!`,
@@ -65,7 +78,11 @@ export async function updateContactController(req, res) {
 
 export async function deleteContactController(req, res) {
   const { contactId } = req.params;
-  await deleteContact(contactId, req.user._id);
+  const deleted = await deleteContact(contactId, req.user._id);
+
+  if (!deleted) {
+    throw createHttpError(404, 'Contact not found');
+  }
 
   res.status(204).send();
 }

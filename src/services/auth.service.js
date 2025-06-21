@@ -49,3 +49,35 @@ export const loginUserService = async (email, password) => {
 
   return { accessToken, refreshToken };
 };
+
+export const refreshSessionService = async (refreshToken) => {
+  if (!refreshToken) {
+    throw createHttpError(401, 'Refresh token is missing');
+  }
+
+  const session = await Session.findOne({ refreshToken });
+  if (!session) {
+    throw createHttpError(403, 'Session not found');
+  }
+
+  const payload = jwt.verify(refreshToken, process.env.JWT_SECRET);
+  const accessToken = jwt.sign({ userId: payload.userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
+  const newRefreshToken = jwt.sign({ userId: payload.userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
+
+  session.accessToken = accessToken;
+  session.refreshToken = newRefreshToken;
+  session.accessTokenValidUntil = new Date(Date.now() + 15 * 60 * 1000);
+  session.refreshTokenValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
+  await session.save();
+
+  return { accessToken, newRefreshToken };
+};
+
+export const logoutUserService = async (refreshToken) => {
+  if (!refreshToken) {
+    throw createHttpError(401, 'Refresh token is missing');
+  }
+
+  await Session.findOneAndDelete({ refreshToken });
+};

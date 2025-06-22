@@ -32,11 +32,19 @@ export async function fetchContactById(contactId, userId) {
 }
 
 export async function createContact(data, userId) {
-  return Contact.create({ ...data, userId });
+  const contactData = { ...data, userId };
+  if (data.file) {
+    contactData.photo = data.file.path;
+  }
+  return Contact.create(contactData);
 }
 
 export async function updateContact(contactId, data, userId) {
-  const updated = await Contact.findOneAndUpdate({ _id: contactId, userId }, data, { new: true });
+  const updateData = { ...data };
+  if (data.file) {
+    updateData.photo = data.file.path;
+  }
+  const updated = await Contact.findOneAndUpdate({ _id: contactId, userId }, updateData, { new: true });
   if (!updated) throw createHttpError(404, 'Contact not found');
   return updated;
 }

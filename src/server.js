@@ -5,6 +5,8 @@ import contactsRouter from './routers/contacts.routers.js';
 import authRouter from './routers/auth.routers.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export function setupServer() {
   const app = express();

@@ -16,7 +16,7 @@ export function setupServer() {
   app.use(express.json());
 
   app.use('/contacts', contactsRouter);
-  app.use('/api/users', authRouter);
+  app.use('/auth', authRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

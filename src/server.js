@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import pino from 'pino-http';
 import contactsRouter from './routers/contacts.routers.js';
@@ -15,6 +16,7 @@ export function setupServer() {
   app.use(pino());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
   app.use('/contacts', contactsRouter);
   app.use('/auth', authRouter);

@@ -13,20 +13,8 @@ contactsRouter.use(authenticate);
 contactsRouter.get('/', getAllContacts);
 contactsRouter.get('/:contactId', isValidId, getContactById);
 
-contactsRouter.post(
-  '/',
-  upload.single('photo'),
-  validateBody(createContactSchema),
-  createContactController
-);
-
-contactsRouter.patch(
-  '/:contactId',
-  isValidId,
-  upload.single('photo'),
-  validateBody(updateContactSchema),
-  updateContactController
-);
+contactsRouter.post('/', upload.single('photo'), validateBody(createContactSchema), createContactController);
+contactsRouter.patch('/:contactId', isValidId, upload.single('photo'), validateBody(updateContactSchema), updateContactController);
 
 contactsRouter.delete('/:contactId', isValidId, deleteContactController);
 

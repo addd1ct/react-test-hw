@@ -52,12 +52,8 @@ export async function getContactById(req, res) {
 }
 
 export async function createContactController(req, res) {
-  const contactData = { ...req.body };
-  if (req.file && req.file.path) {
-    contactData.photo = req.file.path; // URL из Cloudinary
-  }
-
-  const newContact = await createContact(contactData, req.user._id);
+  const photoUrl = req.file?.path || null;
+  const newContact = await createContact({ ...req.body, photo: photoUrl }, req.user._id);
 
   res.status(201).json({
     status: 201,
@@ -68,12 +64,8 @@ export async function createContactController(req, res) {
 
 export async function updateContactController(req, res) {
   const { contactId } = req.params;
-  const contactData = { ...req.body };
-  if (req.file && req.file.path) {
-    contactData.photo = req.file.path;
-  }
-
-  const updated = await updateContact(contactId, contactData, req.user._id);
+  const photoUrl = req.file?.path || null;
+  const updated = await updateContact(contactId, { ...req.body, photo: photoUrl }, req.user._id);
 
   if (!updated) {
     throw createHttpError(404, 'Contact not found');

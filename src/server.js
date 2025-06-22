@@ -14,6 +14,7 @@ export function setupServer() {
   app.use(cors());
   app.use(pino());
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   app.use('/contacts', contactsRouter);
   app.use('/auth', authRouter);

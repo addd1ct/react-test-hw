@@ -33,7 +33,7 @@ export const loginUserService = async (email, password) => {
   const refreshTokenValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
   const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: '15m',
+    expiresIn: '1d',
   });
 
   const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
